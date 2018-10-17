@@ -43,7 +43,7 @@ startBtn.addEventListener('click', function(){
 		while (isNaN(money) || money == "" || money == null) {
 			money = +prompt("Ваш бюджет на месяц?");
 		}
-		appData.budgetValue = money;
+		appData.budget = money;
 		appData.timeData = time;
 		budgetValue.textContent = money.toFixed();
 		year.value = new Date(Date.parse(time)).getFullYear();
@@ -63,6 +63,7 @@ appEx.addEventListener('click', function(){
 			expensesItem.length < 50 && expensesItem !== null && expensesCost !== null) {
 			appData.expenses[expensesItem] = expensesCost;
 			sum += +expensesCost;
+			appData.moneyPerDay = ((appData.budget -sum ) / 30).toFixed();
 		} else {
 			while (expensesItem !== null && expensesCost !== null && expensesItem != '' && expensesCost != '') {
 				expensesItem = prompt("Введите обязательную статью расходов в этом месяце");
@@ -75,17 +76,16 @@ appEx.addEventListener('click', function(){
 
 appOp.addEventListener('click', function(){
 	optionalExp.textContent = '';
-	for (let key in optionalExpensesItem) {
+	optionalExpensesItem.forEach(function(elem, key){
 		let optional = optionalExpensesItem[key].value;
 		appData.optionalExpenses[key] = optional;
-		optionalExp.textContent += appData.optionalExpenses[i] + ' ';
-	}
+		optionalExp.textContent += appData.optionalExpenses[key] + ' ';
+	})
 });
 
 calc.addEventListener('click', function(){
 	if (appData.budget != undefined) {
-			appData.moneyPerDay = (appData.budget / 30).toFixed();
-	dayBudget.textContent = appData.moneyPerDay;
+		dayBudget.textContent = appData.moneyPerDay;
 		if (appData.moneyPerDay < 1000) {
 			level.textContent="Минимальный уровень достатка";
 		} else if (appData.moneyPerDay > 1000 && appData.moneyPerDay < 3000) {
